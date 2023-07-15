@@ -1,0 +1,92 @@
+# More elixir examples
+
+## Section
+
+```elixir
+[a, a] = [1, 1]
+```
+
+```elixir
+1 = a
+a = 1
+```
+
+## Factorial
+
+```elixir
+defmodule Tutorials.Recursion.Factorial do
+  def of(1), do: 1
+  def of(num), do: num * of(num - 1)
+end
+```
+
+```elixir
+factorial = Tutorials.Recursion.Factorial.of(6)
+```
+
+## Factorial - Tail Recursion
+
+```elixir
+defmodule Tutorials.TRecursion.Factorial do
+  def of(1), do: 1
+  def of(num), do: num * of(num - 1)
+
+  def of_tail_rec(num, acc \\ 1)
+  def of_tail_rec(1, acc), do: acc
+
+  def of_tail_rec(num, acc), do: of_tail_rec(num - 1, acc * num)
+end
+```
+
+```elixir
+result = Tutorials.TRecursion.Factorial.of_tail_rec(5)
+```
+
+## Reverse Numbers Tail recursive function
+
+```elixir
+defmodule Tutorials.Recursion.ReverseNum do
+  def rev(num, acc \\ 0)
+  def rev(0, acc), do: acc
+
+  def rev(num, acc) do
+    new_num = div(num, 10)
+    new_acc = acc * 10 + rem(num, 10)
+    rev(new_num, new_acc)
+  end
+end
+```
+
+```elixir
+reverseNum = Tutorials.Recursion.ReverseNum.rev(154)
+```
+
+## List functions
+
+```elixir
+defmodule Tutorials.Lists do
+  def sum_simple([]), do: 0
+  def sum_simple([h | t]), do: h + sum_simple(t)
+end
+```
+
+```elixir
+sum = Tutorials.Lists.sum_simple([4, 5, 6])
+```
+
+## List recursive function
+
+```elixir
+defmodule Tutorials.TLists do
+  def sum_simple([]), do: 0
+  def sum_simple([h | t]), do: h + sum_simple(t)
+
+  def sum_tail_rec(nms, acc \\ 0)
+  def sum_tail_rec([], acc), do: acc
+  def sum_tail_rec([h | t], acc), do: sum_tail_rec(t, acc + h)
+end
+```
+
+```elixir
+sums = Tutorials.TLists.sum_tail_rec([7, 8, 9])
+```

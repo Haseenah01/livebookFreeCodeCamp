@@ -167,5 +167,45 @@ double = double = fn x -> x * 2 end
 ## Concat
 
 ```elixir
+defmodule Tutorials.CLists do
+  @spec reverse([any()], [any()]) :: [any()]
+  def reverse(elements, acc \\ [])
+  def reverse([], acc), do: acc
+  def reverse([h | t], acc), do: reverse(t, [h | acc])
 
+  @spec concat([any()], [any()]) :: [any()]
+  def concat(src, dst), do: concat_func(src |> reverse(), dst)
+
+  defp concat_func([], dst), do: dst
+  defp concat_func([h | t], dst), do: concat_func(t, [h | dst])
+end
+```
+
+```elixir
+concat = Tutorials.CLists.concat([1, 2, 3], [4, 5, 6])
+```
+
+## Flat maps - tail recursion function
+
+```elixir
+defmodule Tutorials.FMLists do
+  @spec reverse([any()], [any()]) :: [any()]
+  def reverse(elements, acc \\ [])
+  def reverse([], acc), do: acc
+  def reverse([h | t], acc), do: reverse(t, [h | acc])
+
+  @spec concat([any()], [any()]) :: [any()]
+  def concat(src, dst), do: concat_func(src |> reverse(), dst)
+
+  defp concat_func([], dst), do: dst
+  defp concat_func([h | t], dst), do: concat_func(t, [h | dst])
+
+  def flat_map(elements, func, acc \\ [])
+  def flat_map([], _, acc), do: acc
+  def flat_map([h | t], func, acc), do: flat_map(t, func, concat(acc, func.(h)))
+end
+```
+
+```elixir
+flatMap = Tutorials.FMLists.flat_map([:a, :b, :c], fn x -> [x, x] end)
 ```

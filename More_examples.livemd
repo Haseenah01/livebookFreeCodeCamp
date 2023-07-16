@@ -78,9 +78,14 @@ sum = Tutorials.Lists.sum_simple([4, 5, 6])
 
 ```elixir
 defmodule Tutorials.TLists do
+  @spec sum(list(number())) :: number()
+  def sum(nums), do: sum_tail_rec(nums)
+
+  @spec sum_simple(list(number())) :: number()
   def sum_simple([]), do: 0
   def sum_simple([h | t]), do: h + sum_simple(t)
 
+  @spec sum_tail_rec(list(number()), integer) :: number()
   def sum_tail_rec(nms, acc \\ 0)
   def sum_tail_rec([], acc), do: acc
   def sum_tail_rec([h | t], acc), do: sum_tail_rec(t, acc + h)
@@ -89,4 +94,78 @@ end
 
 ```elixir
 sums = Tutorials.TLists.sum_tail_rec([7, 8, 9])
+```
+
+## Reverse Linked List - Tail recursive function
+
+```elixir
+defmodule Tutorials.RLists do
+  @spec reverse([any()], [any()]) :: [any()]
+  def reverse(elements, acc \\ [])
+  def reverse([], acc), do: acc
+  def reverse([h | t], acc), do: reverse(t, [h | acc])
+end
+```
+
+```elixir
+rlist = Tutorials.RLists.reverse([5, 6, 7])
+```
+
+```elixir
+rlist = [5, 6, 7] |> Tutorials.RLists.reverse()
+```
+
+## Map list function
+
+```elixir
+double = fn x -> x * 2 end
+```
+
+```elixir
+double.(2)
+```
+
+## Map tail recursive function
+
+```elixir
+defmodule Tutorials.MLists do
+  @spec map([any()], (any() -> any()), [any()]) :: [any()]
+  def map(elements, func, acc \\ [])
+  def map([], _, acc), do: acc
+  def map([h | t], func, acc), do: map(t, func, [func.(h) | acc])
+end
+```
+
+```elixir
+map = Tutorials.MLists.map([1, 2, 3], fn x -> x * 2 end)
+```
+
+```elixir
+rmap = Tutorials.RLists.reverse(Tutorials.MLists.map([1, 2, 3], fn x -> x * 2 end))
+```
+
+```elixir
+rmap = Tutorials.MLists.map([1, 2, 3], fn x -> x * 2 end) |> Tutorials.RLists.reverse()
+```
+
+```elixir
+double = double = fn x -> x * 2 end
+```
+
+```elixir
+[1, 2, 3, 4] |> Tutorials.MLists.map(double)
+```
+
+```elixir
+[1, 2, 3, 4] |> Tutorials.MLists.map(double) |> Tutorials.RLists.reverse()
+```
+
+```elixir
+[1, 2, 3, 4] |> Tutorials.MLists.map(double) |> Enum.reverse()
+```
+
+## Concat
+
+```elixir
+
 ```

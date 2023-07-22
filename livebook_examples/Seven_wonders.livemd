@@ -50,6 +50,10 @@ SevenWonders.print_names(all_wonders)
 
 ## Filters
 
+`Enum.sort` sorts the enumerable by the given function.
+
+This function uses the merge sort algorithm. The given function should compare two arguments, and return true if the first argument precedes or is in the same place as the second one
+
 ```elixir
 defmodule Tutorials.FStructs.SevenWonder do
   defstruct name: "", country: ""

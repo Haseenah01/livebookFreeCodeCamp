@@ -1,6 +1,10 @@
 # More elixir examples
 
-## Section
+## Pattern matching
+
+In Elixir, the `=` operator is actually a match operator.
+
+Writing it turns the whole expression into an equation and makes Elixir match the values on the left hand with the values on the right hand
 
 ```elixir
 [a, a] = [1, 1]
@@ -12,6 +16,8 @@ a = 1
 ```
 
 ## Factorial
+
+A factorial is the product of an integer and all the integers below it
 
 ```elixir
 defmodule Tutorials.Recursion.Factorial do
@@ -31,6 +37,7 @@ defmodule Tutorials.TRecursion.Factorial do
   def of(1), do: 1
   def of(num), do: num * of(num - 1)
 
+  # -- set our base condition whereby accumulator is one
   def of_tail_rec(num, acc \\ 1)
   def of_tail_rec(1, acc), do: acc
 
@@ -122,7 +129,7 @@ double = fn x -> x * 2 end
 ```
 
 ```elixir
-double.(2)
+double.(4)
 ```
 
 ## Map tail recursive function

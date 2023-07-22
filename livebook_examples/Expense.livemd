@@ -24,6 +24,14 @@ date
 ~D[2023-04-01]
 ```
 
+`Enum.reduce` invokes the function for each element in the enumerable with the accumulator.
+
+Capture operator `(&)` in Elixir is same as reference operator in other languages, with extended functionality.
+
+`Enum.filter` filters the enumerable, i.e. returns only those elements for which function returns a truthy value (When an element has a truthy value (neither false nor nil) iteration stops immediately and true is returned).
+
+`List.delete` deletes the given element from the list. Returns a new list without the element.
+
 ```elixir
 defmodule Tutorials.Structs.Expense do
   alias Tutorials.Structs.Expense
@@ -129,5 +137,5 @@ Expense.login("Louis", 1234)
 ```
 
 ```elixir
-Expense.login("Louix", 1234)
+Expense.login("Haseenah", 1234)
 ```

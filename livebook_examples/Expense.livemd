@@ -2,13 +2,19 @@
 
 ## Section
 
+This creates a new date
+
 ```elixir
 Date.new(2023, 04, 01)
 ```
 
+Using pattern matching to make the right side = to the left side
+
 ```elixir
 {:ok, date} = Date.new(2023, 04, 01)
 ```
+
+This will return the value assigned to date variable
 
 ```elixir
 date

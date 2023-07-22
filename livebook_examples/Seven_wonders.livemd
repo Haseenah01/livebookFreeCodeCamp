@@ -2,6 +2,10 @@
 
 ## Structs
 
+This project teaches us how to properly define structs, how to use maps and keyword lists.
+
+It also teaches us how to execute Enum functions and when to use them.
+
 ```elixir
 defmodule Tutorials.Structs.SevenWonders do
   defstruct name: "", country: ""

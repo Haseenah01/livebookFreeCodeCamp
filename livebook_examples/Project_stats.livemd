@@ -2,6 +2,8 @@
 
 ## Error
 
+This module will define our error validation
+
 ```elixir
 defmodule Stats.Errors do
   @spec invalid_data_type() :: {atom(), String.t()}
@@ -10,6 +12,8 @@ end
 ```
 
 ## Validate
+
+This module will define our validation to ensure the output we wish to return, returns true otherwise the error module will be invoked and an appropriate message will be displayed to the user.
 
 ```elixir
 defmodule Stats.Validators do
@@ -25,6 +29,8 @@ end
 ```
 
 ## Mean
+
+This module defines our mean(average) and the functions we need to calculate the sample mean/ population mean of our list values. Validation is done as well and if the value returns an error, the message will display.
 
 ```elixir
 defmodule Stats.CentralTendency.Mean do
@@ -82,6 +88,8 @@ Mean.sample_mean([10, 20, 30])
 
 ## Median
 
+This module defines our median(middle value) and the functions we need to calculate the median of our list values. Validation is done as well and if the value returns an error, the message will display.
+
 ```elixir
 defmodule Stats.CentralTendency.Median do
   require Integer
@@ -124,6 +132,8 @@ end
 
 ## Mode
 
+This section shows us how to define which value appears more frequently in the list.
+
 ```elixir
 ranked_map = [1, 2, 3, 4, 5, 4, 5, 2, 8, 9, 8, 6, 8, 4] |> Enum.frequencies()
 ```
@@ -162,6 +172,8 @@ end
 ```
 
 ## Stats
+
+This module shows us how we could display all the stats functions in one. We can reference their individual module in this specific one through the `alias` denotation and then we can call out each function directly from here.
 
 ```elixir
 defmodule Stats do

@@ -156,7 +156,7 @@ rmap = Tutorials.MLists.map([1, 2, 3], fn x -> x * 2 end) |> Tutorials.RLists.re
 ```
 
 ```elixir
-double = double = fn x -> x * 2 end
+double = fn x -> x * 2 end
 ```
 
 ```elixir
@@ -181,6 +181,7 @@ defmodule Tutorials.CLists do
   def reverse([h | t], acc), do: reverse(t, [h | acc])
 
   @spec concat([any()], [any()]) :: [any()]
+  # -- src(source) and dst(destination)
   def concat(src, dst), do: concat_func(src |> reverse(), dst)
 
   defp concat_func([], dst), do: dst

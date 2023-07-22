@@ -2,9 +2,13 @@
 
 ## Case
 
+Case statement can be considered as a replacement for the switch statement in imperative languages. Case takes a variable/literal and applies pattern matching to it with different cases. If any case matches, Elixir executes the code associated with that case and exits the case statement.
+
 ```elixir
 list = [1, 2, 3]
 ```
+
+`Enum.at` finds the element in the list at the given index. Whichever element is returned, the message will return.
 
 ```elixir
 case Enum.at(list, 2) do
@@ -37,6 +41,8 @@ case post1 do
 end
 ```
 
+You can update a value in your variable by using the piping operator.
+
 ```elixir
 post1 = %{post1 | author: "Haseenah"}
 ```
@@ -50,6 +56,8 @@ end
 ```
 
 ## Condition
+
+Cond statements are used where we want to execute a code on the basis of several conditions. It works like an `if….else` construct in several other programming languages
 
 ```elixir
 cond do

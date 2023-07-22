@@ -1,0 +1,364 @@
+# Data Types
+
+## Atoms
+
+Atoms are constants whose name is their value. They can be created using the color `:` symbol. For example:
+
+```elixir
+:error
+```
+
+```elixir
+{:error, reason} = {:error, "file not found"}
+reason
+```
+
+```elixir
+{:ok, msg} = {:ok, "status 200 ok"}
+msg
+```
+
+Elixir supports true and false as Booleans. Both these values are in fact attached to atoms `:true` and `:false` respectively.
+
+## Strings
+
+Strings in Elixir are inserted between double quotes, and they are encoded in UTF-8. They can span multiple lines and contain interpolations. To define a string simply enter it in double quotes
+
+```elixir
+name = "Haseenah"
+name
+```
+
+To check if the data type of a variable is a string, we use the `is_binary()` command. If it is a string it will return `true`, otherwise `false`
+
+```elixir
+is_binary(name)
+```
+
+You can concatenate two strings with the <>/2 operator:
+
+```elixir
+msg = "Hello " <> name
+```
+
+```elixir
+"Hello " <> name = msg
+name
+```
+
+Binaries are sequences of bytes enclosed in `<< >>` separated with a comma. For example:
+
+```elixir
+<<head, rest::binary>> = name
+head
+```
+
+```elixir
+head == ?H
+```
+
+This command displays the rest of the string after the defined character.
+
+```elixir
+<<"H", rest::binary>> = name
+rest
+```
+
+```elixir
+<<"Ha", rest::binary>> = name
+rest
+```
+
+Binaries are mostly used to handle bits and bytes related data, if you have any. They can, by default, store 0 to 255 in each value. This size limit can be increased by using the size function that says how many bits it should take to store that value. For example:
+
+```elixir
+<<head::binary-size(2), rest::binary>> = name
+head
+```
+
+## Charlist
+
+A char list is nothing more than a list of characters. A character is defined with single quotations.
+
+```elixir
+chars = 'Haseenah'
+```
+
+```elixir
+'Hello ' ++ chars
+```
+
+To check if the data type of a variable is a character list, we use the `is_list()` command. If it is a string it will return `true`, otherwise `false`
+
+```elixir
+is_list(chars)
+```
+
+The `?` in front of your character will give you your number value for that defined character.
+
+```elixir
+?H
+```
+
+## Process
+
+Each Elixir process has its own unique identifier - a PID (process identifier). PIDs are their own data type. You can get the current process's PID with `self()` . PIDs function as mailbox addresses - if you have a process's PID, you can send a message to that process.
+
+```elixir
+my_pid = self()
+my_pid
+```
+
+## Lists Are Not Lists- They are Linked Lists!
+
+Elixir uses square brackets to specify a list of values. Values can be of any type.
+
+```elixir
+lists = ["a", "b", "c"]
+```
+
+Enum provides a set of algorithms to work with enumerables.
+
+In Elixir, an enumerable is any data type that implements the Enumerable protocol. Lists `[1, 2, 3]`, Maps `%{foo: 1, bar: 2}` and Ranges `(1..3)` are common data types used as enumerables:
+
+`Enum.at` in-built function, finds the element at the given index (zero-based).
+
+Returns default if index is out of bounds.
+
+```elixir
+Enum.at(lists, 1)
+```
+
+```elixir
+[first, second, third] = lists
+second
+```
+
+```elixir
+[_, _, third] = ["a", "b", "c"]
+third
+```
+
+The first element in your list is your head
+
+```elixir
+hd(lists)
+```
+
+The rest of the elements in your list is your tail
+
+```elixir
+tl(lists)
+```
+
+```elixir
+[h | t] = lists
+h
+```
+
+```elixir
+t
+```
+
+## Tuple
+
+Tuples are intended as fixed-size containers for multiple elements. To manipulate a collection of elements, use a list instead. Enum functions do not work on tuples. A tuple may contain elements of different types, which are stored contiguously in memory (acts as an array)
+
+Tuples are denoted with curly braces `{}`
+
+```elixir
+{a, b} = {1, 2}
+a
+```
+
+Tuples are typically used either when a function has multiple return values or for error handling.
+
+```elixir
+{:reply, msg, state} = {:reply, "Haseenah found!", ["Haseenah", "Azhar", "Taslimah"]}
+state
+```
+
+## Keyword List
+
+A keyword list is a list that consists exclusively of two-element tuples, the first is known as the key, and it must be an atom. The second element, known as the value, can be any term.
+
+Keywords are mostly used to work with optional values.
+
+```elixir
+data = [a: 1, b: 2]
+```
+
+```elixir
+[{:a, 1}] = [a: 1]
+```
+
+```elixir
+data[:b]
+```
+
+## Maps
+
+Maps are key-value stores where keys can be any value and are compared using the match operator(`===`). Maps can be created with the `%{}`.
+
+```elixir
+my_map = %{a: 1, b: 2, c: 3}
+my_map
+```
+
+```elixir
+%{a: first, b: second, c: third} = my_map
+third
+```
+
+```elixir
+%{b: second} = my_map
+second
+```
+
+```elixir
+my_map.c
+```
+
+The `Map.put(map, key, value)` function allows you to put a new given value under the key. This will just create a copy of the new map, if we run the same variable `my_map` again, it will show the original value before the changes. This is because data in Elixir is immutable.
+
+```elixir
+Map.put(my_map, :a, 4)
+```
+
+```elixir
+my_map
+```
+
+```elixir
+Map.put(my_map, :d, 4)
+```
+
+```elixir
+map2 = %{"a" => 1, "b" => 2, "c" => 3}
+```
+
+```elixir
+%{"b" => b} = map2
+b
+```
+
+We can also using the piping operator(The pipe is used to combine two or more commands, and in this, the output of one command acts as input to another command, and this command’s output may act as input to the next command, and so on. It can also be visualized as a temporary connection between two or more commands/ programs/ processes.) `|` to update a value under a key
+
+```elixir
+map2 = %{map2 | "b" => 5}
+```
+
+```elixir
+my_map = %{my_map | a: 6}
+```
+
+## Struct
+
+Structs are extensions built on top of maps that provide compile-time checks and default values.
+
+```elixir
+defmodule User do
+  defstruct username: "", email: "", age: nil
+end
+```
+
+We can now create User structs by using a syntax similar to the one used to create maps `%User`
+
+```elixir
+user1 = %User{username: "Haseenah", email: "haseenahsami10@gmail.com", age: 22}
+```
+
+```elixir
+%{email: email} = user1
+email
+```
+
+```elixir
+user1 = %{user1 | username: "Sami"}
+```
+
+## Head recursion
+
+If the recursive call occurs at the beginning of a method, it is called a head recursion
+
+```elixir
+defmodule Tutorials.Recursion.PrintDigits do
+  # Base Case
+  def upto(0), do: 0
+
+  # recursive case
+  def upto(nums) do
+    # 3 , 2 , 1 ,
+    upto(nums - 1)
+    IO.puts(nums)
+  end
+end
+```
+
+```elixir
+printNumbers = Tutorials.Recursion.PrintDigits.upto(5)
+```
+
+## Tail recursion
+
+If the recursive call occurs at the end of a method, it is called a tail recursion. The tail recursion is similar to a loop. The method executes all the statements before jumping into the next recursive call
+
+```elixir
+defmodule Tutorials.TRecursion.PrintDigits do
+  # Base Case
+  def upto(0), do: 0
+
+  # recursive case
+  def upto(nums) do
+    # 3 , 2 , 1 ,
+    IO.puts(nums)
+    upto(nums - 1)
+  end
+end
+```
+
+```elixir
+print = Tutorials.TRecursion.PrintDigits.upto(5)
+```
+
+## Sum digits- Regular recursion function
+
+```elixir
+defmodule Tutorials.Recursion.SumDigits do
+  def upto(0), do: 0
+
+  def upto(num) do
+    num + upto(num - 1)
+  end
+end
+```
+
+```elixir
+sum = Tutorials.Recursion.SumDigits.upto(3)
+```
+
+## Sum Digits - Tail recursion
+
+```elixir
+defmodule Tutorials.TRecursion.SumDigits do
+  def upto(0), do: 0
+
+  def upto(num) do
+    num + upto(num - 1)
+  end
+
+  # -- define parameters and make accumulator = 0
+  def upto_tail_rec(num, acc \\ 0)
+
+  # -- define your base case/condition
+  def upto_tail_rec(0, acc), do: acc
+
+  def upto_tail_rec(num, acc) do
+    upto_tail_rec(num - 1, acc + num)
+  end
+end
+```
+
+```elixir
+result = Tutorials.TRecursion.SumDigits.upto_tail_rec(4)
+```

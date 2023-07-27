@@ -41,6 +41,12 @@ You can concatenate two strings with the <>/2 operator:
 msg = "Hello " <> name
 ```
 
+Elixir supports string interpolation, which allows you to place some value in the middle of a string by using the `#{}`. Any Elixir expression is valid inside the interpolation.
+
+```elixir
+msg2 = "Hello #{name}"
+```
+
 ```elixir
 "Hello " <> name = msg
 name
@@ -109,7 +115,7 @@ my_pid = self()
 my_pid
 ```
 
-## Lists Are Not Lists- They are Linked Lists!
+## Linked Lists
 
 Elixir uses square brackets to specify a list of values. Values can be of any type.
 

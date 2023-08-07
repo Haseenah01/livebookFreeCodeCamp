@@ -3,6 +3,12 @@ defmodule DiscussWeb.TopicController do
 
   alias Discuss.Discussions
   alias Discuss.Discussions.Topic
+  #alias Discuss.Accounts
+  #alias Discuss.Accounts.User
+  alias Discuss.Auth.Authorizer
+
+  plug DiscussWeb.Plugs.RequireAuth when action in [:new, :create, :edit, :update, :delete]
+  plug :check_topic_owner when action in [:update, :edit, :delete]
 
   def index(conn, _params) do
     topics = Discussions.list_topics()
@@ -15,7 +21,14 @@ defmodule DiscussWeb.TopicController do
   end
 
   def create(conn, %{"topic" => topic_params}) do
-    case Discussions.create_topic(topic_params) do
+    #user_id = topic_params["user_id"]
+    #user = Accounts.get_user!(user_id)
+    #topic_params = Map.put(topic_params, "user_id", user.id)
+    changeset = conn.assigns.user
+      |> Ecto.build_assoc(:topics)
+      |> Topic.changeset(topic_params)
+
+    case Discuss.Repo.insert(changeset) do
       {:ok, topic} ->
         conn
         |> put_flash(:info, "Topic created successfully.")
@@ -58,5 +71,32 @@ defmodule DiscussWeb.TopicController do
     conn
     |> put_flash(:info, "Topic deleted successfully.")
     |> redirect(to: ~p"/topics")
+  end
+
+  defp check_topic_owner(conn, _params) do
+    %{params: %{"id" => topic_id}} = conn
+    topic = Discussions.get_topic!(topic_id)
+
+    if Authorizer.can_manage?(conn.assigns.user, topic) do
+     conn
+
+    else
+      conn
+      |> put_flash(:error, "You cannot edit that")
+      |> redirect(to: ~p"/topics")
+      |> halt()
+    end
+
+    #def check_topic_owner(conn, _params) do
+      #%{params: %{"id" => topic_id}} = conn
+
+      #if Discussions.get_topic!(topic_id).user_id == conn.assigns.user.id do
+       # conn
+      #else
+       # conn
+        #|> put_flash(:error, "You cannot edit that")
+        #|> redirect(to: ~p"/topics")
+        #|> halt()
+      #end
   end
 end

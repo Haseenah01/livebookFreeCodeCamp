@@ -7,22 +7,25 @@ defmodule ShoppingCart do
 
   end
 
-  def handle_cast({:add_to_cart, item, quantity}, list) do
+  def handle_cast({:add_to_cart, item}, list) do
     #list = list ++ [item]
     #{:noreply, list}
     #updated_list = [item | list]
     #{:noreply, updated_list}
-    {:noreply, list ++ [{item, quantity}]}
+    {:noreply, list ++ [item]}
   end
 
-  def handle_cast({:remove_from_cart, item, quantity}, list ) do
-    updated_list = Enum.reject(list, fn(i) -> i == {item, quantity} end)
+  def handle_cast({:remove_from_cart, item}, list ) do
+    updated_list = Enum.reject(list, fn(i) -> i == {item} end)
     {:noreply, updated_list}
   end
 
   def handle_call(:get_cart, _from, list) do
     #[item | quantity] = list
     #{:reply, item, quantity}
+    list = list
+    |> Enum.frequencies()
+    |> Map.to_list()
     {:reply, list, list}
   end
 
@@ -31,12 +34,12 @@ defmodule ShoppingCart do
     GenServer.start_link(__MODULE__, :ok, [])
   end
 
-  def add_to_cart(pid, item, quantity) do
-    GenServer.cast(pid, {:add_to_cart, item, quantity})
+  def add_to_cart(pid, item) do
+    GenServer.cast(pid, {:add_to_cart, item})
   end
 
-  def remove_from_cart(pid, item, quantity) do
-    GenServer.cast(pid, {:remove_from_cart, item, quantity})
+  def remove_from_cart(pid, item) do
+    GenServer.cast(pid, {:remove_from_cart, item})
   end
 
   def get_cart(pid) do

@@ -16,17 +16,17 @@ defmodule ShoppingCart do
   end
 
   def handle_cast({:remove_from_cart, item}, list ) do
-    updated_list = Enum.reject(list, fn(i) -> i == {item} end)
+    updated_list = Enum.reject(list, fn(i) -> i == item end)
     {:noreply, updated_list}
   end
 
   def handle_call(:get_cart, _from, list) do
     #[item | quantity] = list
     #{:reply, item, quantity}
-    list = list
+    display_list = list
     |> Enum.frequencies()
     |> Map.to_list()
-    {:reply, list, list}
+    {:reply, display_list, list}
   end
 
   #Client API

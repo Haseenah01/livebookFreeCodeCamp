@@ -68,5 +68,5 @@ import_config "#{config_env()}.exs"
         github: {Ueberauth.Strategy.Github, [default_scope: "user:email"]}
       ]
 config :ueberauth, Ueberauth.Strategy.Github.OAuth,
- client_id: "4f6dca6175e16fbcce14",
- client_secret: "6e15eeed87643bd5ee40d96e010818b180214092"
+ client_id: System.get_env("4f6dca6175e16fbcce14"),
+ client_secret: System.get_env("6e15eeed87643bd5ee40d96e010818b180214092")

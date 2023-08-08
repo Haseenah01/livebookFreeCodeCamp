@@ -38,6 +38,7 @@ defmodule ShoppingCart do
     GenServer.cast(pid, {:add_to_cart, item})
   end
 
+  @spec remove_from_cart(atom | pid | {atom, any} | {:via, atom, any}, any) :: :ok
   def remove_from_cart(pid, item) do
     GenServer.cast(pid, {:remove_from_cart, item})
   end

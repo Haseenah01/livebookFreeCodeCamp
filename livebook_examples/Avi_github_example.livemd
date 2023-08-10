@@ -1,6 +1,86 @@
 # TauSpace Concurrency Example - Avi Github
 
-## Section 3: Greeter example
+## Section 2: Concurrency in Elixir
+
+### Introduction to the Actor Model
+
+Elixir uses the Actor Model for concurrency. Each actor (process) is an independent unit that maintains its state and communicates with other actors via messages
+
+```elixir
+pid = spawn(fn -> IO.puts("hi padawan") end)
+```
+
+```elixir
+Process.alive?(pid)
+```
+
+Because the async function was executed, and then ended Once hi was output, the fn was complete. The Erlang Runtime Garbage Collecter collects whatever is associated to that PID
+
+```elixir
+pid = spawn(fn -> Process.sleep(10000) && IO.puts("hi padawan") end)
+```
+
+```elixir
+Process.alive?(pid)
+```
+
+Example: Create a simple process using spawn that prints a message.
+
+```elixir
+defmodule SimpleProcess do
+  def print_message do
+    IO.puts("Hello from a spawned process!")
+  end
+end
+```
+
+```elixir
+pid = spawn(SimpleProcess, :print_message, [])
+```
+
+```elixir
+defmodule Foo do
+  def receiver() do
+    receive do
+      v ->
+        IO.inspect(v)
+        receiver()
+    end
+  end
+end
+```
+
+```elixir
+pid = spawn(Foo, :receiver, [])
+```
+
+This means : run the function on the Foo module , the function name as an atom ( has to be an atom ) and if the func has parameters we put it in the third parameter of spawn as list. In this case the func has two parameters then is []
+
+```elixir
+send(pid, "Hey you")
+```
+
+```elixir
+send(pid, :foo)
+```
+
+```elixir
+Process.alive?(pid)
+```
+
+Ways to kill the process
+
+```elixir
+Process.delete(pid)
+```
+
+```elixir
+Process.alive?(pid)
+```
+
+Its still alive after delete, because Process.delete only sends stop signal or message to the process and the func or module does not have a receive clause to handle a stop signal
+
+## Section 3: Message Passing - Greeter example
 
 In Elixir, processes don't share state. They communicate by sending and receiving messages, ensuring data consistency. Sending and receiving messages between processes Introduction to recursive processes for continuous message listening
 
@@ -61,4 +141,62 @@ send(pid, {:greet_morning, "Haseenah"})
 
 ```elixir
 send(pid2, {:greet_evening, "Sami"})
+```
+
+## Section 4: Process Management
+
+Linking processes means if one fails, the linked processes can be notified. Process dictionaries are like scratch spaces for processes, but their use is generally discouraged.
+
+```elixir
+defmodule LinkedProcess do
+  def start_link do
+    spawn_link(fn -> loop() end)
+  end
+
+  def loop do
+    receive do
+      :exit ->
+        exit(:normal)
+
+      msg ->
+        IO.puts("Received: #{msg}")
+        loop()
+    end
+  end
+end
+```
+
+```elixir
+pid = LinkedProcess.start_link()
+```
+
+```elixir
+# Process.exit(pid, :kill) 
+```
+
+Exercise Question : Linked Process
+
+Consider the above example of a linked process. Modify the `LinkedProcess` module to include a function that sends messages to the loop. Then, write code to spawn the linked process, send it several messages, and finally kill it.
+
+Hint: You can use the `send/2` function to send messages to a process by its PID.
+Goal: Practice working with linked processes, message passing, and process termination.
+
+```elixir
+send(pid, "Hello world")
+send(pid, "Hello Haseenah")
+```
+
+```elixir
+send(pid, :exit)
+```
+
+```elixir
+send(pid, "Hello Sami")
+```
+
+In order to kill the linked process, you need to run the :exit process for it to return true
+
+```elixir
+# Will kill linked process
+Process.exit(pid, :kill)
 ```

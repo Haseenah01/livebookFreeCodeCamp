@@ -1,0 +1,64 @@
+# TauSpace Concurrency Example - Avi Github
+
+## Section 3: Greeter example
+
+In Elixir, processes don't share state. They communicate by sending and receiving messages, ensuring data consistency. Sending and receiving messages between processes Introduction to recursive processes for continuous message listening
+
+```elixir
+defmodule Greeter do
+  def start do
+    spawn(fn -> loop() end)
+  end
+
+  def loop do
+    receive do
+      {:greet, name} ->
+        IO.puts("Hello, #{name}!")
+        loop()
+    end
+  end
+end
+```
+
+```elixir
+pid = Greeter.start()
+```
+
+```elixir
+send(pid, {:greet, "Alice"})
+```
+
+Exercise 1:
+Modify the Greeter module to handle different types of greetings (e.g., Good Morning, Good Evening) based on messages sent to the process.
+
+```elixir
+defmodule Greeter1 do
+  def start do
+    spawn(fn -> loop() end)
+  end
+
+  def loop do
+    receive do
+      {:greet_morning, name} ->
+        IO.puts("Good morning, #{name}!")
+
+      {:greet_evening, name} ->
+        IO.puts("Good evening, #{name}!")
+        loop()
+    end
+  end
+end
+```
+
+```elixir
+pid = Greeter1.start()
+pid2 = Greeter1.start()
+```
+
+```elixir
+send(pid, {:greet_morning, "Haseenah"})
+```
+
+```elixir
+send(pid2, {:greet_evening, "Sami"})
+```

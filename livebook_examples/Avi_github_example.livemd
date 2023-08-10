@@ -200,3 +200,91 @@ In order to kill the linked process, you need to run the :exit process for it to
 # Will kill linked process
 Process.exit(pid, :kill)
 ```
+
+## Section 6: OTP (Open Telecom Platform)
+
+### OTP  Supervisors
+
+* Supervisors monitor other processes and can restart them if they crash. They ensure the system's resilience. Strategies for fault tolerance Child specifications
+
+### TP Supervisors
+
+* Supervisors are specialized processes that monitor other processes, called child processes.
+* If a child process crashes, the supervisor can restart it, allowing for fault tolerance and resilience.
+* Supervisors work according to different strategies to decide how to restart child processes.
+
+### Strategies for Fault Tolerance
+
+* One for One: If a child process dies, only that process is restarted.
+* One for All: If one child process dies, all other child processes are restarted.
+* Rest for One: If a child process dies, the rest of the processes started after it are restarted.
+
+### Child Specifications
+
+* Child specifications define how a child process is started, how often it should be restarted, and other settings
+
+Example: Fault Tolerance
+
+```elixir
+defmodule MyWorker do
+  use GenServer
+
+  # Client API
+  def init(init_arg) do
+    {:ok, init_arg}
+  end
+
+  def start_link(_) do
+    GenServer.start_link(__MODULE__, 0, name: __MODULE__)
+  end
+
+  def increment do
+    GenServer.call(__MODULE__, :increment)
+  end
+
+  # Server
+  def handle_call(:increment, _from, state) do
+    {:reply, :ok, state + 1}
+  end
+end
+```
+
+```elixir
+defmodule MySupervisor do
+  use Supervisor
+
+  def start_link(_) do
+    Supervisor.start_link(__MODULE__, [], name: __MODULE__)
+  end
+
+  def init(_) do
+    children = [
+      {MyWorker, []}
+    ]
+
+    Supervisor.init(children, strategy: :one_for_one)
+  end
+end
+```
+
+```elixir
+Supervisor.start_link(MySupervisor, [])
+```
+
+```elixir
+MyWorker.increment()
+```
+
+### Exercise Question
+
+Create a new module called `WorkerSupervisor`, which will be responsible for supervising two workers: `WorkerA` and `WorkerB`. Both workers should be GenServers that keep track of a number, and they should support increment and get operations.
+
+Implement the following functionalities:
+
+* `WorkerA` and `WorkerB`: Create the GenServer modules for both workers.
+* `WorkerSupervisor`: Create the supervisor module that uses the `:one_for_all` strategy.
+* Test Functionality: Write a test function that spawns multiple processes to concurrently increment both workers and then prints the final values.
+
+```elixir
+
+```

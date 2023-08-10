@@ -1,0 +1,210 @@
+# Samuel Mullen - Elixir Processes: Spawn, Send, and Receive
+
+## Spawn and processes
+
+This returns the tuple: {:memory, 2632}. 2,632 is "the size in bytes of the process. This includes call stack, heap, and internal structures.”
+
+```elixir
+spawn(fn -> IO.puts("Hello, World!") end)
+|> Process.info(:memory)
+```
+
+## Sending and Receiving Messages
+
+Sending messages to processes in Elixir is easy. All we need is the process ID `(PID)` and a message to send
+
+```elixir
+send(self(), :hi)
+```
+
+messages are stored in the process mailbox until the process “receives” them. We can see that using `Process.info/2`
+
+```elixir
+Process.info(self(), :messages)
+```
+
+To retrieve the message from the IEx process’s mailbox, we need to “receive” it, with the `receive/1` macro
+
+```elixir
+receive do
+  :hi -> IO.puts("Hello.")
+end
+```
+
+```elixir
+Process.info(self(), :messages)
+```
+
+If you were to run the receive function again, your IEx session would hang until terminated, which is why it’s a good idea to include an after clause when working with `receive/1`
+
+```elixir
+receive do
+  :hi ->
+    IO.puts("Hello!")
+after
+  0 ->
+    IO.puts("Message not found")
+end
+```
+
+The after clause takes a timeout value of either :infinity or an integer between 0 and 4,294,967,295 (49.7 days). Setting the value to 0 allows the receive block to return immediately, while any other value will wait that amount of milliseconds
+
+## Spawn,Send and Receive
+
+```elixir
+defmodule Salutator do
+  def run do
+    receive do
+      {:hi, name} ->
+        IO.puts("Hi, #{name}")
+
+      {_, name} ->
+        IO.puts("Hello, #{name}")
+    end
+  end
+end
+```
+
+```elixir
+pid = spawn(Salutator, :run, [])
+```
+
+```elixir
+send(pid, {:hi, "Mark"})
+```
+
+```elixir
+send(pid, {:hello, "Suzie"})
+```
+
+Notice that the second time we sent Salutator a message, it didn’t return the expected results. Remember, `receive/1` is a normal function (well, macro). Once it’s run, it’s done. To get `run/0` to receive more than one message, we’ll have to call it again. We can do that with recursion
+
+```elixir
+defmodule Salutator1 do
+  def run do
+    receive do
+      {:hi, name} ->
+        IO.puts("Hi, #{name}")
+
+      {_, name} ->
+        IO.puts("Hello, #{name}")
+    end
+
+    # <- Recursion FTW(For The Win!)
+    run()
+  end
+end
+```
+
+```elixir
+pid = spawn(Salutator1, :run, [])
+```
+
+```elixir
+send(pid, {:hi, "Samantha"})
+```
+
+```elixir
+send(pid, {:hello, "Alex"})
+```
+
+## The Process Mailbox
+
+The process that sends the message does not block on `send/2`, it puts the message in the recipient’s mailbox and continues.” The receiving process is then able to process messages from its mailbox according to its capacity, without needing to communicate its progress to the originating process, and without hindering the caller’s progress
+
+Each process has its own mailbox which is limited only by the available memory
+
+## Putting It All Together
+
+To begin, we’ll create a process to accumulate and group anagrammatical words. Next, we’ll create a module which will read words from the dictionary, create a process for each word (104334 words on my system, so that’s 104334 processes) to parse and store the results in the accumulator. Here’s the accumulator:
+
+```elixir
+defmodule Accumulator do
+  def loop(anagrams \\ %{}) do
+    receive do
+      {from, {:add, {letters, word}}} ->
+        anagrams = add_word(anagrams, letters, word)
+        send(from, :ok)
+        # must put loop/0 inside each match
+        loop(anagrams)
+
+      {from, :list} ->
+        send(from, {:ok, list_anagrams(anagrams)})
+        loop(anagrams)
+    end
+  end
+
+  defp add_word(anagrams, letters, word) do
+    words = Map.get(anagrams, letters, [])
+
+    anagrams
+    |> Map.put(letters, [word | words])
+  end
+
+  defp list_anagrams(anagrams) do
+    anagrams
+    |> Enum.filter(fn {k, v} -> length(v) >= 3 end)
+  end
+end
+```
+
+Our accumulator has two responsibilities: to add anagrams to the list and to return the list when requested. These responsibilities are laid out in the `receive` (lines 3-12) clause of the loop/1 function. In both cases, the `Accumulator` responds to the calling process via `send/2` (lines 6 and 10). When adding words, it responds with `:ok`, while `:list` responds with a tuple of `:ok` and the list of anagrams. The private functions, `add_word/3` and `list_anagrams/1`, do exactly what their names suggest.
+
+```elixir
+pid = spawn(Accumulator, :loop, [])
+```
+
+Our next module, Anagrammar, is the interface to Accumulator.
+
+```elixir
+defmodule Anagrammar do
+  @dictionary "/usr/share/dict/american-english"
+
+  def build_list(accumulator_pid) do
+    words()
+    |> Enum.each(&add_anagram(accumulator_pid, &1))
+  end
+
+  def get_list(accumulator_pid) do
+    send(accumulator_pid, {self(), :list})
+
+    receive do
+      {:ok, list} ->
+        list
+        |> Enum.each(&IO.inspect/1)
+    end
+  end
+
+  defp words do
+    File.read!(@dictionary)
+    |> String.split("\n")
+  end
+
+  defp add_anagram(accumulator_pid, word) do
+    spawn(fn -> _add_anagram(accumulator_pid, word) end)
+  end
+
+  defp _add_anagram(accumulator_pid, word) do
+    send(accumulator_pid, {self(), {:add, parse(word)}})
+
+    receive do
+      :ok -> :ok
+    end
+  end
+
+  defp parse(word) do
+    letters =
+      word
+      |> String.downcase()
+      |> String.split("")
+      |> Enum.sort(&(&1 <= &2))
+      |> Enum.join()
+
+    {letters, word}
+  end
+end
+```
+
+There’s a lot going on here, so let’s break it down piece by piece. The `build_list/1` function (line 4-7) is responsible for taking the words (lines 23-26) from our system’s dictionary, parsing them (lines 40-49), and then loading them into the accumulator (lines 32-38). It does this by creating a new process for each word (lines 28-30). Note that when we send a message to our accumulator on line 33, we expect an `:ok` response (lines 35-37) shortly thereafter.
+
+Getting a list is much easier; we provide `get_list/1` (line 9) with the accumulator’s PID. `get_list/1` then sends a message to the accumulator (line 10) and `recieve`s the response (lines 12-16)

@@ -319,9 +319,17 @@ defmodule WorkerA do
     GenServer.call(__MODULE__, :increment)
   end
 
+  def get_state do
+    GenServer.call(__MODULE__, :get_state)
+  end
+
   # Server
   def handle_call(:increment, _from, state) do
-    {:reply, state, state + 1}
+    {:reply, :ok, state + 1}
+  end
+
+  def handle_call(:get_state, _from, state) do
+    {:reply, state, state}
   end
 end
 ```
@@ -343,9 +351,17 @@ defmodule WorkerB do
     GenServer.call(__MODULE__, :increment)
   end
 
+  def get_state do
+    GenServer.call(__MODULE__, :get_state)
+  end
+
   # Server
   def handle_call(:increment, _from, state) do
-    {:reply, state, state + 1}
+    {:reply, :ok, state + 1}
+  end
+
+  def handle_call(:get_state, _from, state) do
+    {:reply, state, state}
   end
 end
 ```
@@ -399,5 +415,13 @@ WorkerA.increment()
 ```
 
 ```elixir
+WorkerA.get_state()
+```
+
+```elixir
 WorkerB.increment()
+```
+
+```elixir
+WorkerB.get_state()
 ```

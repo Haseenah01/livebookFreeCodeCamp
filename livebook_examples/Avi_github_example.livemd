@@ -244,7 +244,7 @@ defmodule MyWorker do
 
   # Server
   def handle_call(:increment, _from, state) do
-    {:reply, :ok, state + 1}
+    {:reply, state, state + 1}
   end
 end
 ```
@@ -262,13 +262,30 @@ defmodule MySupervisor do
       {MyWorker, []}
     ]
 
-    Supervisor.init(children, strategy: :one_for_one)
+    opts = [strategy: :one_for_one, name: MySupervisor]
+    Supervisor.init(children, opts)
   end
 end
 ```
 
 ```elixir
-Supervisor.start_link(MySupervisor, [])
+MySupervisor.start_link([])
+```
+
+```elixir
+MyWorker.increment()
+```
+
+```elixir
+Supervisor.which_children(MySupervisor)
+```
+
+```elixir
+Process.exit(pid, :shutdown)
+```
+
+```elixir
+Supervisor.which_children(MySupervisor)
 ```
 
 ```elixir
@@ -286,5 +303,101 @@ Implement the following functionalities:
 * Test Functionality: Write a test function that spawns multiple processes to concurrently increment both workers and then prints the final values.
 
 ```elixir
+defmodule WorkerA do
+  use GenServer
 
+  # Client API
+  def init(init_arg) do
+    {:ok, init_arg}
+  end
+
+  def start_link(_) do
+    GenServer.start_link(__MODULE__, 0, name: __MODULE__)
+  end
+
+  def increment do
+    GenServer.call(__MODULE__, :increment)
+  end
+
+  # Server
+  def handle_call(:increment, _from, state) do
+    {:reply, state, state + 1}
+  end
+end
+```
+
+```elixir
+defmodule WorkerB do
+  use GenServer
+
+  # Client API
+  def init(init_arg) do
+    {:ok, init_arg}
+  end
+
+  def start_link(_) do
+    GenServer.start_link(__MODULE__, 0, name: __MODULE__)
+  end
+
+  def increment do
+    GenServer.call(__MODULE__, :increment)
+  end
+
+  # Server
+  def handle_call(:increment, _from, state) do
+    {:reply, state, state + 1}
+  end
+end
+```
+
+```elixir
+defmodule WorkerSupervisor do
+  use Supervisor
+
+  def start_link(_) do
+    Supervisor.start_link(__MODULE__, [], name: __MODULE__)
+  end
+
+  def init(_) do
+    children = [
+      {WorkerA, []},
+      {WorkerB, []}
+    ]
+
+    opts = [strategy: :one_for_all, name: WorkerSupervisor]
+    Supervisor.init(children, opts)
+  end
+end
+```
+
+```elixir
+WorkerSupervisor.start_link([])
+```
+
+```elixir
+WorkerA.increment()
+```
+
+```elixir
+WorkerB.increment()
+```
+
+```elixir
+Supervisor.which_children(WorkerSupervisor)
+```
+
+```elixir
+Process.exit(pid, :shutdown)
+```
+
+```elixir
+Supervisor.which_children(WorkerSupervisor)
+```
+
+```elixir
+WorkerA.increment()
+```
+
+```elixir
+WorkerB.increment()
 ```

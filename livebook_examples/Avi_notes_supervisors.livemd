@@ -1,0 +1,61 @@
+# TauSpace Supervisor Example - Avi Github
+
+## 1. Supervision trees
+
+### Exercise
+
+Identify suitable scenarios for each restart strategy.
+
+1. `:one_for_one` Strategy
+   This strategy restarts only the failed child process. It is suitable for scenarios where child processes are independent of one another.
+
+   Example Scenario:
+
+   * In a web server, where each worker process handles an independent client request. If one request fails, it should not affect the other requests.
+
+2. `:one_for_all` Strategy
+   This strategy restarts all child processes if one fails. It's suitable for scenarios where all child processes are tightly coupled and dependent on one another.
+
+   Example Scenario:
+
+   * In a distributed database cluster, if one node fails, it might cause inconsistency across other nodes. Restarting all nodes ensures that they are synchronized and consistent.
+
+3. `:rest_for_one` Strategy
+   This strategy restarts the failed child process and any process started after it. It's suitable for scenarios where some child processes depend on others, but not all of them.
+
+   Example Scenario:
+
+   * In a multi-stage data processing pipeline, if one stage fails, all subsequent stages that depend on it must be restarted, but previous stages can continue to run.
+
+## 2. Dynamic Supervision
+
+Dynamic supervision allows you to manage child processes that are created at runtime. This is useful when you don't know the children beforehand.
+
+**Example** A chat application where each user connection spawns a new supervised process:
+
+```elixir
+# options = [name: ChatApp.Supervisor, strategy: :one_for_one]
+# DynamicSupervisor.start_link(options)
+
+# To start a new chat handler dynamically:
+
+# {:ok, pid} = DynamicSupervisor.start_child(ChatApp.Supervisor, ChatHandler)
+```
+
+## 3. Task Supervision
+
+The `Task.Supervisor` specializes in supervising short-lived tasks.
+
+**Example** Running a background job to send email notifications:
+
+```elixir
+# {:ok, pid} = Task.Supervisor.start_child(MyApp.TaskSupervisor, fn -> send_emails end)
+```
+
+### Exercise: Building a Supervised Customer Support Ticket System
+
+#### Objective
+
+Create a system that allows customer support tickets to be managed, including the creation, assignment to support agents, and resolution of tickets, using Elixir's supervision capabilities.
+
+(This will be done on vs code)

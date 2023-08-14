@@ -129,9 +129,25 @@ Six ways that OpenAPI guides API design:
 
 * JSON > JSON Schema
 * Signatures
-* Do not very response models from parameter!
-  Collections and entities are a good fit
+* Do not vary response models from parameter!
+* Collections and entities are a good fit
 * Versioning
 * Defaults and pagination
 
 Schema Object: The Schema Object allows the definition of input and output data types. These types can be objects, but also primitives and arrays. This object is an extended subset of the `JSON Schema Specification Wright Draft 00`
+
+## OAS 3.0 Specification: 1. Introduction - What is OAS?
+
+OAS (formerly known as Swagger) is a specification for building APIs. OAS defines a standard, language-agnostic interface to RESTful APIs. Allows both humans and computers to understand the capabilities of a service without accessing its source code or seeing further documentation.
+
+Additional resources: [ASP.NET Core web API documentation with Swagger / OpenAPI](https://learn.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger?view=aspnetcore-7.0)
+
+## 2. Major Components
+
+* **OpenAPI Object**: The root document object of the OAS document.
+
+* **Info Object**: Provides metadata about the API like title, version, and other details.
+
+* **Paths Object**: Defines the available paths and operations for the API.
+
+* **Components Object**: A set of reusable objects for different aspects of the OAS. Can include schemas (like JSON schemas for request and response bodies), parameters, responses, examples, request bodies, headers, security schemes, links, callbacks, and more.

@@ -1,0 +1,137 @@
+# APIs - TauSpace lesson from Avi github
+
+## APIs
+
+API stands for Application Programming Interface. It's a set of rules and protocols that allows different software applications to communicate with each other. Think of it as a menu in a restaurant. You, the customer, have a list of dishes you can order, prepared by the kitchen. The waiter (API) takes your request to the kitchen and brings back the dish you ordered. In this analogy:
+
+* You are the user.
+* The order represents the request.
+* The kitchen is the system or application that processes the request.
+* The dish that is served to you is the response.
+* In a technical context, when you use an app on your phone to check the weather, the app sends a request to a server via an API. The server processes the request, retrieves the data, and sends it back to your app, which then displays the weather to you.
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Why are APIs important?
+
+* **Interoperability**: APIs allow different software systems, which might have been developed independently and possibly in entirely different programming languages, to work together.
+* **Modularity**: Systems can be built modularly, with different components interacting through well-defined APIs. This makes development, scaling, and troubleshooting easier.
+* **Security**: Instead of giving direct access to databases or core systems, APIs allow controlled access, exposing only what's necessary.
+* **Efficiency**: APIs can provide a standardized way to provide and receive data, which can lead to faster development and integration times.
+* **Economic Value**: Companies often monetize their data and services through APIs. For instance, cloud providers offer a plethora of services accessed primarily through APIs.
+
+<!-- livebook:{"break_markdown":true} -->
+
+### Different types of APIs:
+
+* **REST (Representational State Transfer)**: REST is an architectural style for distributed systems. RESTful APIs use HTTP requests to perform CRUD (Create, Read, Update, Delete) operations on resources, which are represented as URLs.
+
+* **GraphQL**: Developed by Facebook, GraphQL is a query language for APIs. Instead of having multiple endpoints, GraphQL APIs typically have a single endpoint that can interpret and respond to complex queries, allowing clients to request only the data they need.
+
+* **SOAP (Simple Object Access Protocol)**: A protocol, primarily used for web services. It's known for its robustness and has built-in error handling. However, it's considered heavier than REST.
+
+* **WebSockets**: Unlike the request-response model of REST and GraphQL, WebSockets allow a continuous two-way communication between the client and server. It's useful for applications that require real-time functionality.
+
+* **gRPC**: Developed by Google, gRPC is a high-performance, open-source framework that uses HTTP/2 for transport and Protocol Buffers as the interface description language.
+
+## REST API and OpenAPI - Nathan Hekman video
+
+### Example
+
+* You created a web application that allows employees to manage the flavors of ice cream that are in stock
+* The web app then communicates with a cloud based server that communicates via a REST API.
+* Hire Mark to start developing and maintaining the application but is unaware of REST APIs and what exactly to do
+* He first needs to reference OpenAPI definition to quickly understand what exactly REST API does.
+
+#### What is OpenAPI?
+
+* First we need to determine the OpenAPI specification
+* It is a specification that outlines how to describe a REST API interface
+* We do this through OpenAPI Definition which is a file such as YAML/JSON and it describes what an API or service can do
+
+#### Benefits of OpenAPI
+
+* Standardized format for describing your REST API - readable by humans or machines
+* Guidance - documentation to understand or use the API
+* It allows you to extend your REST API with tooling such as API validation, API doc generator and SDK(software development kit) generator
+
+#### .yaml file consists of different sections/parts:
+
+* Basic REST API information
+* Describes API request
+* Describes API response
+* Example response
+
+## Better API Design with OpenAPI - Marsh Gardiner
+
+### 1. OpenAPI: A brief history
+
+* 2010 - Swagger project founded by Wordnik
+* 2014 - Swagger 2.0 Released
+* 2015 - OpenAPI initiative founded, spec contributed
+* 2017 - OpenAPI 3.0.0 released
+
+#### Mission of the OpenAPI initiative
+
+* Provides an open source,technical community within which industry participants may easily contribute to building a vendor-neutral, portable and an open specification for providing technical metadat for REST APIs - the "OpenAPI Specification" (OAS)
+
+<!-- livebook:{"break_markdown":true} -->
+
+### 2. Specifications in the API Lifecycle
+
+* A SPECIFICATION is a CONTRACT between client and server
+* A contract defines the boundary of responsibility
+* If you like contracts and you have scale problems, GRPC is a great fit
+* If you have adoption problems, it is preferable to go with OpenAPI
+
+#### API Lifecycle with OpenAPI
+
+* **Build**: 
+  * Model
+  * Develop
+  * Document
+  * Test
+* **Use**:
+  * Publish APIs
+  * Access Control
+  * Data Access
+  * Analyze
+* **Run**:
+  * Real-time monitoring
+  * Threat Protection
+
+#### Specs
+
+* Specs drive documentation - is the single biggest reason to use an OpenAPI spec today.
+* It can inform implementations
+* can drive mocks
+* Specs can also power:
+  * Test generation
+  * Traffic classification
+  * Runtime validation
+  * SDK generation
+  * Server-side code
+  * ... and more!
+* Improve the API design process
+
+#### Hints
+
+1. Re-use, don't re-invent
+2. Resource-oriented (the R in URL)
+3. Names matter
+4. When in doubt, do what is best for developers
+
+<!-- livebook:{"break_markdown":true} -->
+
+### 4. Style implications from OpenAPI's opinions
+
+Six ways that OpenAPI guides API design:
+
+* JSON > JSON Schema
+* Signatures
+* Do not very response models from parameter!
+  Collections and entities are a good fit
+* Versioning
+* Defaults and pagination
+
+Schema Object: The Schema Object allows the definition of input and output data types. These types can be objects, but also primitives and arrays. This object is an extended subset of the `JSON Schema Specification Wright Draft 00`

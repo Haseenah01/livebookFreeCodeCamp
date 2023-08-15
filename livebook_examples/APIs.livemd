@@ -165,4 +165,11 @@ Additional resources: [ASP.NET Core web API documentation with Swagger / OpenAPI
 * sup flag (mix new project_name --sup): creates our application with a supervision tree
 * plug_cowboy: a module composed of two modules(plug module(gives us tools to work with HTTP requests) and cowboy module(a web server written in Erlang that handles all connections and processes any incoming and outgoing requests))
 * JASON: super fast JSON parser and generator which we will use to handle our JSON
-* `plug():match)` : match incoming requests to defined endpoints
+* `plug(:match)` : match incoming requests to defined endpoints
+
+### 1. Spin up a Postgres Docker Container locally
+
+* Docker allows us to package and run an application in a loosely isolated environment called a container
+* The isolation and security allows you to run multiple containers at the same time on a given host.
+* Containers are lightweight and contain everything needed to run the applications so you don't need to rely on what's currently installed on the host.
+* an image is an isolated file system. It must contain everything to run an application. So all the dependencies, configuration,scripts, binaries, etc.

@@ -12,4 +12,11 @@ defmodule OurFirstApiTest.RouterTest do
     assert conn.resp_body == "OK"
   end
 
+  test "return Blork Erlang" do
+    build_conn = conn(:get, "/aliens_name")
+    conn = OurFirstApi.Router.call(build_conn, @opts)
+    assert conn.state == :sent
+    assert conn.resp_body == "Blork Erlang"
+  end
+
 end

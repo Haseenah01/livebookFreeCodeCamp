@@ -15,5 +15,7 @@ defmodule OurFirstApi.Router do
 
   get "/", do: send_resp(conn,200,"OK")
 
+  get "/aliens_name", do: send_resp(conn, 200, "Blork Erlang")
+
   match _,do: send_resp(conn,404,"Not found")
 end

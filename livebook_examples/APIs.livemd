@@ -165,4 +165,4 @@ Additional resources: [ASP.NET Core web API documentation with Swagger / OpenAPI
 * sup flag (mix new project_name --sup): creates our application with a supervision tree
 * plug_cowboy: a module composed of two modules(plug module(gives us tools to work with HTTP requests) and cowboy module(a web server written in Erlang that handles all connections and processes any incoming and outgoing requests))
 * JASON: super fast JSON parser and generator which we will use to handle our JSON
-* `plug{:match}` : match incoming requests to defined endpoints
+* `plug():match)` : match incoming requests to defined endpoints

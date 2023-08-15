@@ -1,6 +1,6 @@
 # APIs - TauSpace lesson from Avi github
 
-## APIs
+## 1. APIs
 
 API stands for Application Programming Interface. It's a set of rules and protocols that allows different software applications to communicate with each other. Think of it as a menu in a restaurant. You, the customer, have a list of dishes you can order, prepared by the kitchen. The waiter (API) takes your request to the kitchen and brings back the dish you ordered. In this analogy:
 
@@ -12,7 +12,7 @@ API stands for Application Programming Interface. It's a set of rules and protoc
 
 <!-- livebook:{"break_markdown":true} -->
 
-### Why are APIs important?
+### 1.2 Why are APIs important?
 
 * **Interoperability**: APIs allow different software systems, which might have been developed independently and possibly in entirely different programming languages, to work together.
 * **Modularity**: Systems can be built modularly, with different components interacting through well-defined APIs. This makes development, scaling, and troubleshooting easier.
@@ -22,7 +22,7 @@ API stands for Application Programming Interface. It's a set of rules and protoc
 
 <!-- livebook:{"break_markdown":true} -->
 
-### Different types of APIs:
+### 1.3 Different types of APIs:
 
 * **REST (Representational State Transfer)**: REST is an architectural style for distributed systems. RESTful APIs use HTTP requests to perform CRUD (Create, Read, Update, Delete) operations on resources, which are represented as URLs.
 
@@ -33,6 +33,8 @@ API stands for Application Programming Interface. It's a set of rules and protoc
 * **WebSockets**: Unlike the request-response model of REST and GraphQL, WebSockets allow a continuous two-way communication between the client and server. It's useful for applications that require real-time functionality.
 
 * **gRPC**: Developed by Google, gRPC is a high-performance, open-source framework that uses HTTP/2 for transport and Protocol Buffers as the interface description language.
+
+## 2. OAS 3.0 Specification
 
 ## REST API and OpenAPI - Nathan Hekman video
 
@@ -151,3 +153,16 @@ Additional resources: [ASP.NET Core web API documentation with Swagger / OpenAPI
 * **Paths Object**: Defines the available paths and operations for the API.
 
 * **Components Object**: A set of reusable objects for different aspects of the OAS. Can include schemas (like JSON schemas for request and response bodies), parameters, responses, examples, request bodies, headers, security schemes, links, callbacks, and more.
+
+## 3. Course Material on Setting up an API
+
+### 0. First Endpoint in Elixir
+
+* REST API was created by a computer scientist by the name, Roy Fielding.
+* An API is a mechanism that enables an application or service to access a resource within another application or service.
+* The application or service doing the accessing is called the client
+* The application or service containing the resource is called the server
+* sup flag (mix new project_name --sup): creates our application with a supervision tree
+* plug_cowboy: a module composed of two modules(plug module(gives us tools to work with HTTP requests) and cowboy module(a web server written in Erlang that handles all connections and processes any incoming and outgoing requests))
+* JASON: super fast JSON parser and generator which we will use to handle our JSON
+* `plug{:match}` : match incoming requests to defined endpoints

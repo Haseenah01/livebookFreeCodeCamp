@@ -173,3 +173,101 @@ Additional resources: [ASP.NET Core web API documentation with Swagger / OpenAPI
 * The isolation and security allows you to run multiple containers at the same time on a given host.
 * Containers are lightweight and contain everything needed to run the applications so you don't need to rely on what's currently installed on the host.
 * an image is an isolated file system. It must contain everything to run an application. So all the dependencies, configuration,scripts, binaries, etc.
+
+### 2. Using Phoenix Framework to Create an Elixir REST API Project
+
+* Introducing the Phoenix Framework as a web development framework built on top of Elixir, which is a functional programming language.
+* Using Phoenix allows for efficient and scalable development of web applications.
+* Explains that routes are responsible for mapping incoming requests to specific controller actions
+* They demonstrate how to define different types of routes, such as GET and POST requests
+* Explains that controllers handle business logic and interact with models or services
+* The presenter emphasizes the importance of writing tests for reliable software development
+
+### 3. Using Phoenix Framework to Generate JSON Resources for Elixir REST API Project
+
+* Explains that one of the key features of Phoenix is its ability to generate JSON resources effortlessly
+* Covers important concepts such as controllers and views in Phoenix, which play crucial roles in handling HTTP requests and rendering responses
+* Emphasizes the simplicity and efficiency of these components when working with JSON resources
+
+### 4. Authentication using Guardian & Bcrypt for Elixir REST API Project
+
+* Emphasizes that without proper authentication, unauthorized users may gain access to sensitive data or perform malicious actions.
+* Explains how to set up dependencies for Guardian and Bcrypt in an Elixir project
+* Guardian is a token-based authentication library, while Bcrypt is a password hashing algorithm used to securely store user passwords.
+* Demonstrates how to generate and verify JWT (JSON Web Tokens) using Guardian
+* JWTs are used to authenticate and authorize requests made by clients to the API
+* Discusses how to integrate authentication into different routes of the REST API using Guardian's plug functionality
+* This allows for fine-grained control over which routes require authentication and which do not
+
+### 5. Register New Account Endpoint for Elixir REST API Project
+
+* Emphasizes the importance of having a registration endpoint in any application that requires user authentication. This endpoint allows users to create new accounts and access various features within the application
+* Demonstrates how to set up a route for registering a new account and explains how to handle incoming requests.
+* Highlights the significance of validating user input to ensure data integrity and prevent potential security vulnerabilities
+* Explains how to use Ecto, a database wrapper in Elixir, to validate and persist user information securely
+* Covers different types of errors that may occur during registration and provides insights on how to handle these errors gracefully by returning appropriate HTTP status codes and error messages
+
+### 6. Sign In Account Endpoint for Elixir REST API Project
+
+* Explains how to handle incoming requests, validate user credentials, and generate authentication tokens for successful sign-ins
+* Demonstrates how to securely store passwords using hashing algorithms such as bcrypt
+* This ensures that even if a database breach occurs, user passwords remain protected.
+* Covers error handling techniques and provides insights into best practices for handling various scenarios like incorrect passwords or non-existent accounts
+
+### 7. Protected Endpoints for Elixir REST API Project
+
+* JWTs are explained as a secure way to transmit user information between client and server, preventing unauthorized access
+* By assigning different roles to users, access control can be implemented effectively. This ensures that only users with specific roles can perform certain actions or access particular resources
+* Explains the use of middleware functions in Elixir to handle authentication and authorization logic. These functions act as a layer between incoming requests and endpoint handlers, allowing for centralized control and easy modification
+
+### 8. Account Session with Plug.Conn for Elixir REST API Project
+
+* Emphasizes the need for secure and efficient session management to ensure user authentication and authorization
+* Delves into the technical details of implementing account sessions using Plug.conn
+* Demonstrates how to create a session controller module that handles various operations such as creating a new session, retrieving session data, and destroying a session.
+* Discusses the use of cookies to store session information securely
+
+### 9. Using Plug Actions as "middleware" for Elixir REST API Project
+
+* Introduces Plug, a specification and set of conveniences for building web applications in Elixir
+* It explains that Plug provides a unified interface for handling HTTP requests and responses, making it easier to build modular and composable web applications
+* Explains how Plug actions can be used as middleware in an Elixir REST API project
+* Middleware refers to a layer of software that sits between the application and the server, allowing for additional functionality to be added without modifying the core application code.
+* Using plug actions as middleware in an Elixir REST API project promotes code reusability, modularity, and separation of concerns
+
+### 10. Using Guardian.DB to track or revoke JWT's for Elixir REST API Project
+
+* Introducing Guardian.db, which is a library that extends the functionality of Guardian, a popular authentication framework in Elixir
+* Emphasizes the importance of tracking and revoking JWTs to ensure security and control over user sessions
+* Delves into how to track tokens using Guardian.db. It explains how each token is associated with a user ID and can be stored in a database table for future reference. This allows developers to keep track of active tokens issued to users.
+* Demonstrates how developers can revoke specific tokens by removing them from the database table. This ensures that revoked tokens are no longer valid for authentication purposes
+* Touches upon additional features provided by Guardian.db, such as automatic token expiration and pruning expired tokens from the database
+
+### 11. Using Guardian to refresh a JWT session for Elixir REST API Tutorial
+
+* One of the key points covered is how to refresh JWT sessions using Guardian's built-in functionality. The presenter explains that refreshing tokens helps maintain user sessions without requiring them to log in again
+* Addresses handling expired tokens by intercepting requests and checking if a token needs refreshing or if it has already expired
+
+### 12. Set Token types & Expiration with Guardian for Elixir REST API Tutorial
+
+* Explains that token types allow for different levels of access within an application, such as user or admin privileges. This ensures that only authorized users can perform certain actions
+* Delves into setting token expiration, which adds an additional layer of security by automatically invalidating tokens after a specified period. The presenter demonstrates how to configure Guardian to handle token expiration efficiently
+
+### 13. Using Ecto Preload for Elixir REST API Tutorial
+
+* The concept of eager loading is introduced, which involves fetching associated data along with the main query to avoid additional database calls
+* Delves into explaining how to use Ecto Preload, a feature provided by Elixir's database wrapper library, to efficiently load associations
+* By using `preload` in conjunction with `Repo.get`, developers can fetch related data in a single query rather than making separate requests
+
+### 14. How to Refactor Our Plug Action for Reusability in our Elixir REST API Tutorial
+
+* Highlights the significance of refactoring, which involves restructuring existing code to improve its readability, maintainability, and efficiency
+* Emphasizes that refactoring is crucial for creating reusable code that can be easily adapted and extended for future projects
+* Demonstrates how to refactor a specific plug action by extracting it into a separate module, making it more reusable across different parts of the application. By doing so, developers can avoid duplicating code and ensure consistency throughout their project
+
+### 15. Password Required to Update Account in our Elixir REST API Tutorial
+
+* Discussed is the creation of a new migration file to add a password field to the user schema. This step involves modifying the existing user table and adding a new column for storing hashed passwords securely
+* Explains how to update the registration process by including password validation. This ensures that users provide strong passwords that meet specific criteria, such as minimum length and inclusion of special characters
+* Implements password hashing using bcrypt. This technique converts plain-text passwords into irreversible hashes, enhancing security by preventing unauthorized access even if the database is compromised
+* Highlights how to authenticate users during login by comparing their entered passwords with stored hashed values

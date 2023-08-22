@@ -4,7 +4,7 @@ defmodule CounterServer do
   # Callbacks
 
 def handle_call(:increment, _from, state) do
-  {:reply, :ok, state + 1}
+  {:reply, state, state + 1}
 end
 
 def handle_call(:decrement, _from, state) do
